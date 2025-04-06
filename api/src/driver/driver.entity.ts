@@ -1,17 +1,16 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import {Column, Entity, PrimaryColumn} from "typeorm";
 
 @Entity()
-export class Driver
-{
+export class Driver {
     @PrimaryColumn()
-    driver_id: number;
+    driverID: number;
 
     @Column()
-    driver_name: string;
+    driverName: string;
 
     @Column()
-    driver_number: number;
+    driverNumber: number;
 
     @Column()
-    driver_region: string;
+    driverRegion: string;
 }
