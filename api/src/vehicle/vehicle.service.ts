@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 
@@ -50,7 +50,12 @@ export class vehicleService {
     }
 
     async updateVehicle(vehicleRegNum: number, updateVehicleDTO: updateVehicleDTO): Promise<Vehicle> {
-
+        const vehicle = await this.vehicleRepository.findOneBy({vehicleRegNum});
+        if(!vehicle) {
+            throw new NotFoundException("Vehicle not found");
+        }
+        Object.assign(vehicle, updateVehicleDTO);
+        return this.vehicleRepository.save(vehicle);
     }
 }
 
