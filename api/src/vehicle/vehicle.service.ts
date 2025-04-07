@@ -51,7 +51,7 @@ export class vehicleService {
 
     async updateVehicle(vehicleRegNum: number, updateVehicleDTO: updateVehicleDTO): Promise<Vehicle> {
         const vehicle = await this.vehicleRepository.findOneBy({vehicleRegNum});
-        if(!vehicle) {
+        if (!vehicle) {
             throw new NotFoundException("Vehicle not found");
         }
         Object.assign(vehicle, updateVehicleDTO);
