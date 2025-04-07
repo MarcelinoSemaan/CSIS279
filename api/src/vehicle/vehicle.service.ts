@@ -3,7 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 
 import {createVehicleDTO} from "./dto/create-vehicle.dto";
-import {updateVehicleDTO} from "./dto/update-product.dto"
+import {updateVehicleDTO} from "./dto/update-vehicle.dto"
 import {Vehicle} from "./vehicle.entity";
 import {Driver} from "../driver/driver.entity"
 import {driverService} from "../driver/driver.service"
