@@ -57,5 +57,9 @@ export class vehicleService {
         Object.assign(vehicle, updateVehicleDTO);
         return this.vehicleRepository.save(vehicle);
     }
+
+    async removeVehicle(vehicleRegNum: number): Promise<void> {
+        await this.vehicleRepository.delete(vehicleRegNum);
+    }
 }
 
