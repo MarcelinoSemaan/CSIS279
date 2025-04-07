@@ -5,7 +5,7 @@ import {createDriverDTO} from "./dto/create-driver.dto";
 import {updateDriverDTO} from "./dto/update-driver.dto";
 
 @Controller('driver')
-export class DriverController {
+export class driverController {
     constructor(private readonly driverService: driverService) {
     }
 
