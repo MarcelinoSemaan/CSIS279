@@ -31,10 +31,10 @@ export class driverController {
 
     @Put(':id')
     update(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('driverID', ParseIntPipe) driverID: number,
         @Body() updateDriverDTO: updateDriverDTO
     ): Promise<Driver> {
-        return this.driverService.updateDriver(id, updateDriverDTO);
+        return this.driverService.updateDriver(driverID, updateDriverDTO);
     }
 
     @Delete(':id')

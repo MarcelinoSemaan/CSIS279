@@ -19,7 +19,6 @@ export class vehicleService {
     }
 
     @InjectRepository(Driver)
-
     createVehicle(createVehicleDTO: createVehicleDTO): Promise<Vehicle> {
         const vehicle = new Vehicle();
         vehicle.vehicleRegNum = createVehicleDTO.vehicleRegNum;

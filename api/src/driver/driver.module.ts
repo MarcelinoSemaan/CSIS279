@@ -10,4 +10,5 @@ import {driverService} from "./driver.service";
     controllers: [driverController],
 })
 
-export class DriverModule {}
+export class DriverModule {
+}
