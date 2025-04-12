@@ -22,7 +22,7 @@ export class vehicleService {
     createVehicle(createVehicleDTO: createVehicleDTO): Promise<Vehicle> {
         const vehicle = new Vehicle();
         vehicle.vehicleRegNum = createVehicleDTO.vehicleRegNum;
-        vehicle.driverDriverID = createVehicleDTO.driverDriverID;
+        vehicle.vehicleDriverID = createVehicleDTO.vehicleDriverID;
         vehicle.vehicleBrand = createVehicleDTO.vehicleBrand;
         vehicle.vehicleModel = createVehicleDTO.vehicleModel;
         vehicle.vehicleType = createVehicleDTO.vehicleType;
@@ -40,8 +40,8 @@ export class vehicleService {
     }
 
 
-    async findDriverByDriverID(driverDriverID: number): Promise<Driver> {
-        return this.driverService.findByDriverID(driverDriverID);
+    async findDriverByDriverID(vehicleDriverID: number): Promise<Driver> {
+        return this.driverService.findByDriverID(vehicleDriverID);
     }
 
     async findByVehicleType(vehicleType: number): Promise<Vehicle[]> {

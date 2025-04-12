@@ -1,6 +1,6 @@
 export class createVehicleDTO {
     vehicleRegNum: number;
-    driverDriverID: number;
+    vehicleDriverID: number;
     vehicleBrand: string;
     vehicleModel: string;
     vehicleType: number;

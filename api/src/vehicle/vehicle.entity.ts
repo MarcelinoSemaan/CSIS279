@@ -7,7 +7,7 @@ export class Vehicle {
     vehicleRegNum: number;
 
     @OneToOne(() => Driver)
-    driverDriverID: number;
+    vehicleDriverID: number;
 
     @Column()
     vehicleBrand: string;
