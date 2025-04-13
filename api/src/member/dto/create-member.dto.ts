@@ -1,4 +1,4 @@
-export class CreateMemberDto {
+export class createMemberDTO {
     memberID: number;
     memberTeamID: number;
     memberTeamCampusID: number;
