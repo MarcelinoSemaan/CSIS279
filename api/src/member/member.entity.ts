@@ -17,7 +17,7 @@ export class Member {
     memberTeamID: number;
 
     @ManyToOne(() => Team)
-    memberTeamCampusID: number;
+    memberTeamOfficeID: number;
 
     @Column()
     memberName: string;
