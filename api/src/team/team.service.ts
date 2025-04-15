@@ -37,7 +37,7 @@ export class teamService {
         return this.teamRepository.findOneBy({teamID: teamID});
     }
 
-    async findOfficeByOfficeID(teamOfficeID: number): Promise<Office> {
+    async findTeamOfficeByOfficeID(teamOfficeID: number): Promise<Office> {
         return this.officeRepository.findByOfficeID(teamOfficeID);
     }
 

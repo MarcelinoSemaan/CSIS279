@@ -26,8 +26,8 @@ export class vehicleController {
     }
 
     @Get(':id')
-    findDriverByDriverID(@Param('vehicleDriverID', ParseIntPipe) vehicleDriverID: number): Promise<Driver> {
-        return this.vehicleService.findDriverByDriverID(vehicleDriverID);
+    findVehDriverByDriverID(@Param('vehicleDriverID', ParseIntPipe) vehicleDriverID: number): Promise<Driver> {
+        return this.vehicleService.findVehDriverByDriverID(vehicleDriverID);
     }
 
     @Get(':id')

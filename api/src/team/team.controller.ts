@@ -27,8 +27,8 @@ export class teamController {
     }
 
     @Get(':id')
-    findOfficeByOfficeID(@Param('teamOfficeID', ParseIntPipe) teamOfficeID: number): Promise<Office> {
-        return this.teamService.findOfficeByOfficeID(teamOfficeID);
+    findTeamOfficeByOfficeID(@Param('teamOfficeID', ParseIntPipe) teamOfficeID: number): Promise<Office> {
+        return this.teamService.findTeamOfficeByOfficeID(teamOfficeID);
     }
 
     @Post(':id')

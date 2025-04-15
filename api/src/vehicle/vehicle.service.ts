@@ -40,7 +40,7 @@ export class vehicleService {
     }
 
 
-    async findDriverByDriverID(vehicleDriverID: number): Promise<Driver> {
+    async findVehDriverByDriverID(vehicleDriverID: number): Promise<Driver> {
         return this.driverService.findByDriverID(vehicleDriverID);
     }
 
