@@ -1,7 +1,7 @@
 export class createMemberDTO {
     memberID: number;
     memberTeamID: number;
-    memberTeamCampusID: number;
+    memberTeamOfficeID: number;
     memberVehicleRegNum: number;
     memberDriverID: number;
     memberName: string;

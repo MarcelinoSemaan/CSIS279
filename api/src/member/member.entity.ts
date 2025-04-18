@@ -11,7 +11,7 @@ export class Member {
     memberVehicleRegNum: number;
 
     @OneToOne(() => Vehicle)
-    vehicleRegNum: number;
+    memberDriverID: number;
 
     @ManyToOne(() => Team)
     memberTeamID: number;
