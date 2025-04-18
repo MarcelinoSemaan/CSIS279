@@ -14,7 +14,7 @@ export class teamService {
     constructor(
         @InjectRepository(Team)
         private readonly teamRepository: Repository<Team>,
-        private readonly officeRepository: officeService
+        private readonly officeService: officeService
     ) {
     }
 
@@ -38,7 +38,7 @@ export class teamService {
     }
 
     async findTeamOfficeByOfficeID(teamOfficeID: number): Promise<Office> {
-        return this.officeRepository.findByOfficeID(teamOfficeID);
+        return this.officeService.findByOfficeID(teamOfficeID);
     }
 
     async updateTeam(teamID: number, updateTeamDTO: updateTeamDTO): Promise<Team> {
