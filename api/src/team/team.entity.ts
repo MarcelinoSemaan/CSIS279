@@ -1,4 +1,4 @@
-import {Column, Entity, OneToOne, PrimaryColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryColumn} from "typeorm";
 import {Office} from "../office/office.entity";
 
 @Entity()
@@ -7,6 +7,7 @@ export class Team {
     teamID: number;
 
     @OneToOne(() => Office)
+    @JoinColumn({name : "teamOfficeID"})
     teamOfficeID: number;
 
     @Column()

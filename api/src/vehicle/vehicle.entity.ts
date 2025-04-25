@@ -1,4 +1,4 @@
-import {Column, Entity, OneToOne, PrimaryColumn} from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn} from "typeorm";
 import {Driver} from "../driver/driver.entity";
 
 @Entity()
@@ -6,7 +6,8 @@ export class Vehicle {
     @PrimaryColumn()
     vehicleRegNum: number;
 
-    @OneToOne(() => Driver)
+    @OneToOne(() => Driver, { cascade: true } )
+    @JoinColumn({ name: 'vehicleDriverID'})
     vehicleDriverID: number;
 
     @Column()

@@ -22,12 +22,12 @@ export class vehicleService {
     createVehicle(createVehicleDTO: createVehicleDTO): Promise<Vehicle> {
         const vehicle = new Vehicle();
         vehicle.vehicleRegNum = createVehicleDTO.vehicleRegNum;
-        vehicle.vehicleDriverID = createVehicleDTO.vehicleDriverID;
         vehicle.vehicleBrand = createVehicleDTO.vehicleBrand;
         vehicle.vehicleModel = createVehicleDTO.vehicleModel;
         vehicle.vehicleType = createVehicleDTO.vehicleType;
         vehicle.vehicleCapacity = createVehicleDTO.vehicleCapacity;
 
+        vehicle.vehicleDriverID = createVehicleDTO.vehicleDriverID;
         return this.vehicleRepository.save(vehicle);
     }
 
