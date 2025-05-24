@@ -7,6 +7,7 @@ import api from '../../utils/api';
 
 const DriverList = () => {
   const [drivers, setDrivers] = useState([]);
+  const [allDrivers, setAllDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddDriver, setShowAddDriver] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,15 +16,29 @@ const DriverList = () => {
     fetchDrivers();
   }, []);
 
-  const fetchDrivers = async (search = '') => {
+  const fetchDrivers = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/driver', {
-        params: { search }
-      });
-      setDrivers(response.data);
+      const response = await api.get('/driver');  // Using the correct endpoint from the controller
+      console.log('Drivers response:', response);
+
+      if (response.data && Array.isArray(response.data)) {
+        setAllDrivers(response.data);
+        setDrivers(response.data);
+      } else if (response.data) {
+        // Handle single driver case
+        const driversData = Array.isArray(response.data) ? response.data : [response.data];
+        setAllDrivers(driversData);
+        setDrivers(driversData);
+      } else {
+        console.error('No data received from API');
+        setAllDrivers([]);
+        setDrivers([]);
+      }
     } catch (error) {
-      console.error('Error fetching drivers:', error);
+      console.error('Error fetching drivers:', error.response || error);
+      setAllDrivers([]);
+      setDrivers([]);
     } finally {
       setLoading(false);
     }
@@ -31,7 +46,17 @@ const DriverList = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchDrivers(searchTerm);
+    if (!searchTerm.trim()) {
+      setDrivers(allDrivers);
+      return;
+    }
+
+    const filteredDrivers = allDrivers.filter(driver =>
+      driver.driverName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.driverRegion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.driverNumber.toString().includes(searchTerm)
+    );
+    setDrivers(filteredDrivers);
   };
 
   const handleDriverAdded = (newDriver) => {

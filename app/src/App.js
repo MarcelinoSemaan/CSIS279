@@ -12,6 +12,7 @@ import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import TeamsList from './components/teams/TeamsList';
 import DriverList from './components/drivers/DriverList';
+import VehicleList from './components/vehicles/VehicleList';
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -72,6 +73,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <DriverList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/vehicles"
+                        element={
+                            <ProtectedRoute>
+                                <VehicleList />
                             </ProtectedRoute>
                         }
                     />
