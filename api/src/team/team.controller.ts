@@ -1,9 +1,9 @@
-import {Team} from "./team.entity"
+import {Team, TeamStatus} from "./team.entity"
 import {teamService} from "./team.service";
 import {createTeamDTO} from "./dto/create-team.dto";
 import {updateTeamDTO} from "./dto/update-team.dto";
 
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Patch} from "@nestjs/common";
 import {Office} from "../office/office.entity";
 
 @Controller('team')
@@ -43,5 +43,12 @@ export class teamController {
     remove(@Param('id', ParseIntPipe) teamID: number): Promise<void> {
         return this.teamService.removeTeam(teamID);
     }
-}
 
+    @Patch(':id/status')
+    updateStatus(
+        @Param('id', ParseIntPipe) teamID: number,
+        @Body('status') status: TeamStatus
+    ): Promise<Team> {
+        return this.teamService.updateTeamStatus(teamID, status);
+    }
+}

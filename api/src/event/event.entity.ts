@@ -9,16 +9,13 @@ export enum EventStatus {
 
 @Entity()
 export class Event {
-
     @PrimaryGeneratedColumn()
     eventID: number;
 
-    @ManyToOne(() => Office)
-    @JoinColumn({ name: 'eventOfficeID' })
+    @Column({ nullable: true })
     eventOfficeID: number;
 
-    @ManyToOne(() => Team)
-    @JoinColumn({ name: 'eventTeamID' })
+    @Column()
     eventTeamID: number;
 
     @Column({ nullable: true })
@@ -48,5 +45,13 @@ export class Event {
         default: EventStatus.ACTIVE
     })
     status: EventStatus;
+
+    @ManyToOne(() => Team, { eager: true })
+    @JoinColumn({ name: 'eventTeamID' })
+    team: Team;
+
+    @ManyToOne(() => Office, { eager: true })
+    @JoinColumn({ name: 'eventOfficeID' })
+    office: Office;
 }
 

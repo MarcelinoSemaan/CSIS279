@@ -1,6 +1,6 @@
 import {Office} from "../office/office.entity";
 import {officeService} from "../office/office.service";
-import {Team} from "./team.entity";
+import {Team, TeamStatus} from "./team.entity";
 import {createTeamDTO} from "./dto/create-team.dto";
 import {updateTeamDTO} from "./dto/update-team.dto";
 import {Inject, Injectable, NotFoundException, forwardRef} from "@nestjs/common";
@@ -22,6 +22,7 @@ export class teamService {
         team.teamOfficeID = createTeamDTO.teamOfficeID;
         team.teamName = createTeamDTO.teamName;
         team.teamLeader = createTeamDTO.teamLeader;
+        team.teamStatus = TeamStatus.AVAILABLE; // Set default status
 
         return this.teamRepository.save(team);
     }
@@ -31,7 +32,11 @@ export class teamService {
     }
 
     async findByTeamID(teamID: number): Promise<Team> {
-        return this.teamRepository.findOneBy({teamID: teamID});
+        const team = await this.teamRepository.findOneBy({teamID: teamID});
+        if (!team) {
+            throw new NotFoundException("Team not found");
+        }
+        return team;
     }
 
     async findTeamOfficeByOfficeID(teamOfficeID: number): Promise<Office> {
@@ -47,7 +52,14 @@ export class teamService {
         return this.teamRepository.save(team);
     }
 
+    async updateTeamStatus(teamID: number, status: TeamStatus): Promise<Team> {
+        const team = await this.findByTeamID(teamID);
+        team.teamStatus = status;
+        return this.teamRepository.save(team);
+    }
+
     async removeTeam(teamID: number): Promise<void> {
+        const team = await this.findByTeamID(teamID);
         await this.teamRepository.delete(teamID);
     }
 }

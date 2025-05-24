@@ -2,6 +2,11 @@ import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn} from "ty
 import {Office} from "../office/office.entity";
 import {Member} from "../member/member.entity";
 
+export enum TeamStatus {
+    AVAILABLE = "available",
+    UNAVAILABLE = "unavailable"
+}
+
 @Entity()
 export class Team {
     @PrimaryColumn()
@@ -19,5 +24,11 @@ export class Team {
 
     @Column()
     teamLeader: string;
-}
 
+    @Column({
+        type: "enum",
+        enum: TeamStatus,
+        default: TeamStatus.AVAILABLE
+    })
+    teamStatus: TeamStatus;
+}

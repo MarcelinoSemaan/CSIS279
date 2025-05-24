@@ -16,7 +16,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "echo 'No e2e tests implemented yet.'"
+    "test:e2e": "echo 'No e2e tests implemented yet.'",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "db:sync": "npm run typeorm schema:sync -- -d src/data-source.ts",
+    "db:drop": "npm run typeorm schema:drop -- -d src/data-source.ts",
+    "db:reset": "npm run db:drop && npm run db:sync"
   },
   "dependencies": {
     "@nestjs/common": "11.0.7",
