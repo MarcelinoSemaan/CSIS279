@@ -17,7 +17,7 @@ A full-stack web application for managing teams, events, and problem reporting b
    - Create a `.env` file with the following:
      ```
      DB_HOST=localhost
-     DB_PORT=5432
+     DB_PORT=3306
      DB_USERNAME=your_username
      DB_PASSWORD=your_password
      DB_NAME=event_management
@@ -65,6 +65,7 @@ A full-stack web application for managing teams, events, and problem reporting b
 - GET `/team` - Get all teams
 - GET `/team/:id` - Get team by ID
 - POST `/team` - Create new team
+  - Body: `{ teamName: string, teamOfficeID: number }`
 - PUT `/team/:id` - Update team
 - DELETE `/team/:id` - Delete team
 
@@ -72,8 +73,23 @@ A full-stack web application for managing teams, events, and problem reporting b
 - GET `/member` - Get all members
 - GET `/member/:id` - Get member by ID
 - POST `/member` - Create new member
+  - Body: `{ memberName: string, memberEmail: string, memberRole: string, memberTeamID: number }`
 - PUT `/member/:id` - Update member
 - DELETE `/member/:id` - Delete member
+
+### Vehicles
+- GET `/vehicle` - Get all vehicles
+- GET `/vehicle/:id` - Get vehicle by ID
+- POST `/vehicle` - Create new vehicle
+- PUT `/vehicle/:id` - Update vehicle
+- DELETE `/vehicle/:id` - Delete vehicle
+
+### Drivers
+- GET `/driver` - Get all drivers
+- GET `/driver/:id` - Get driver by ID
+- POST `/driver` - Create new driver
+- PUT `/driver/:id` - Update driver
+- DELETE `/driver/:id` - Delete driver
 
 ## Database Schema
 
@@ -90,7 +106,7 @@ A full-stack web application for managing teams, events, and problem reporting b
   eventDescription: string
   eventProblemType: number
   eventProblemDescription: string
-  status: EventStatus
+  status: "active" | "finished"
 }
 ```
 
@@ -115,15 +131,35 @@ A full-stack web application for managing teams, events, and problem reporting b
 }
 ```
 
+### Vehicle
+```typescript
+{
+  vehicleID: number (PK)
+  vehicleType: string
+  vehicleStatus: string
+  vehicleNumber: string
+}
+```
+
+### Driver
+```typescript
+{
+  driverID: number (PK)
+  driverName: string
+  driverStatus: string
+  driverLicense: string
+}
+```
+
 ## Third-Party Libraries
 
 ### Backend
 - NestJS - Node.js framework
 - TypeORM - ORM for database operations
+- MySQL2 - MySQL database driver
 - Passport - Authentication
 - JWT - Token-based authentication
 - Class Validator - DTO validation
-- PostgreSQL - Database
 
 ### Frontend
 - React - UI library
@@ -166,17 +202,6 @@ A full-stack web application for managing teams, events, and problem reporting b
   - problemDetails: { problemDescription: string, priority: string }
 - Returns: Promise<Event>
 
-### Team Service Methods
-
-#### `createTeam(createTeamDto: CreateTeamDto)`
-- Description: Creates a new team
-- Parameters: CreateTeamDto containing team details
-- Returns: Promise<Team>
-
-#### `findAll()`
-- Description: Retrieves all teams
-- Returns: Promise<Team[]>
-
 ### Frontend Components
 
 #### EventCalendar
@@ -184,8 +209,15 @@ A full-stack web application for managing teams, events, and problem reporting b
 - Props: None
 - State:
   - events: Event[]
-  - selectedEvent: Event
+  - selectedEvent: Event | null
+  - sidebarOpen: boolean
   - showReportModal: boolean
+- Features:
+  - Display events in a calendar view
+  - Create, edit, and delete events
+  - Report problems for events
+  - View event details in sidebar
+  - Filter events by team
 
 #### TeamsList
 - Purpose: Displays teams and their availability
@@ -193,6 +225,20 @@ A full-stack web application for managing teams, events, and problem reporting b
 - State:
   - teams: Team[]
   - loading: boolean
+- Features:
+  - View team availability
+  - Navigate to problems tab
+  - Display team status
+
+#### Sidebar
+- Purpose: Main navigation component
+- Props: None
+- State:
+  - location: RouterLocation
+- Features:
+  - Dynamic menu rendering
+  - Active route highlighting
+  - Logout functionality
 
 ## Testing
 
@@ -215,7 +261,12 @@ A full-stack web application for managing teams, events, and problem reporting b
    ```
 
 ## Additional Notes
-- The system uses JWT for authentication
+- The system uses JWT for authentication with token expiration
 - Calendar events support problem reporting with priority levels
 - Teams can be marked as available/unavailable
 - Real-time updates for team availability and problem reporting
+- Supports multiple office locations and team assignments
+- Vehicle and driver management for transport coordination
+- Responsive design supporting desktop and mobile views
+- Role-based access control for different user types
+- Error handling and input validation on both frontend and backend
