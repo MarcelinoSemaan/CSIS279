@@ -59,13 +59,17 @@ const EventList = ({
 
   return (
     <div className="event-list-container">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>{title}</h2>
-        <Button variant="primary" onClick={onAddClick}>
-          <FontAwesomeIcon icon={faPlus} className="me-2" />
-          Add Event
-        </Button>
-      </div>
+      {(title || onAddClick) && (
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          {title && <h2>{title}</h2>}
+          {onAddClick && (
+            <Button variant="primary" onClick={onAddClick}>
+              <FontAwesomeIcon icon={faPlus} className="me-2" />
+              Add Event
+            </Button>
+          )}
+        </div>
+      )}
 
       <Form onSubmit={handleSearch} className="mb-4">
         <InputGroup>

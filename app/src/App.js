@@ -11,6 +11,7 @@ import TeamLeaderEventList from './components/teams/TeamLeaderEventList';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import TeamsList from './components/teams/TeamsList';
+import DriverList from './components/drivers/DriverList';
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -33,6 +34,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+    // eslint-disable-next-line no-unused-vars
     const { isAuthenticated } = useSelector(state => state.auth);
 
     return (
@@ -62,6 +64,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <MemberEventList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/events/drivers"
+                        element={
+                            <ProtectedRoute>
+                                <DriverList />
                             </ProtectedRoute>
                         }
                     />

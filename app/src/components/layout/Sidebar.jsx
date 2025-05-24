@@ -7,11 +7,10 @@ import {
   faSignOutAlt,
   faUsers,
   faUserTie,
-  faTruck,
   faCalendarAlt,
   faPeopleGroup,
-  faHome,
-  faExclamationTriangle
+  faExclamationTriangle,
+  faTruck
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
@@ -30,6 +29,7 @@ const Sidebar = () => {
     { name: 'Teams', icon: faPeopleGroup, path: '/events/teams' },
     { name: 'Members', icon: faUsers, path: '/events/members' },
     { name: 'Team Leaders', icon: faUserTie, path: '/events/team-leaders' },
+    { name: 'Drivers', icon: faTruck, path: '/events/drivers' },
     { name: 'Problems', icon: faExclamationTriangle, path: '/problems' },
   ];
 
