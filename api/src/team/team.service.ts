@@ -1,11 +1,9 @@
 import {Office} from "../office/office.entity";
 import {officeService} from "../office/office.service";
-
 import {Team} from "./team.entity";
 import {createTeamDTO} from "./dto/create-team.dto";
 import {updateTeamDTO} from "./dto/update-team.dto";
-
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {Inject, Injectable, NotFoundException, forwardRef} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 
@@ -14,11 +12,10 @@ export class teamService {
     constructor(
         @InjectRepository(Team)
         private readonly teamRepository: Repository<Team>,
+        @Inject(forwardRef(() => officeService))
         private readonly officeService: officeService
-    ) {
-    }
+    ) {}
 
-    @InjectRepository(Office)
     createTeam(createTeamDTO: createTeamDTO): Promise<Team> {
         const team = new Team();
         team.teamID = createTeamDTO.teamID;
@@ -54,3 +51,4 @@ export class teamService {
         await this.teamRepository.delete(teamID);
     }
 }
+

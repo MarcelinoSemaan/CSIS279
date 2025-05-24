@@ -6,7 +6,7 @@ export class Driver {
     @PrimaryColumn()
     driverID: number;
 
-    @OneToOne(() => Vehicle, () => Driver)
+    @OneToOne(() => Vehicle, vehicle => vehicle.vehicleDriverID)
     Vehicle: Vehicle;
 
     @Column()
@@ -18,3 +18,4 @@ export class Driver {
     @Column()
     driverRegion: string;
 }
+

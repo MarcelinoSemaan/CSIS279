@@ -6,12 +6,19 @@ export class Office {
     @PrimaryColumn()
     officeID: number;
 
-    @OneToOne(() => Team)
-    Team:Team;
+    @OneToOne(() => Team, team => team.teamOfficeID)
+    Team: Team;
 
     @Column()
     officeBranch: string;
 
     @Column()
     officePhone: number;
+
+    @Column()
+    officeEmail: string;
+
+    @Column()
+    password: string;
 }
+

@@ -5,6 +5,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {createDriverDTO} from "./dto/create-driver.dto";
 import {Driver} from "./driver.entity";
 import {updateDriverDTO} from "./dto/update-driver.dto";
+import {Vehicle} from "../vehicle/vehicle.entity";
 
 
 @Injectable()
@@ -12,6 +13,8 @@ export class driverService {
     constructor(
         @InjectRepository(Driver)
         private readonly driverRepository: Repository<Driver>,
+        @InjectRepository(Vehicle)
+        private readonly vehicleRepository: Repository<Vehicle>,
     ) {
     }
 
@@ -49,4 +52,17 @@ export class driverService {
     async deleteDriver(driverID: number): Promise<void> {
         await this.driverRepository.delete(driverID);
     }
+
+    async findDriverVehicle(driverID: number): Promise<Vehicle> {
+        const vehicle = await this.vehicleRepository.findOne({
+            where: { vehicleDriverID: driverID }
+        });
+
+        if (!vehicle) {
+            throw new NotFoundException(`Vehicle for driver with ID ${driverID} not found`);
+        }
+
+        return vehicle;
+    }
 }
+

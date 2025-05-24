@@ -2,6 +2,7 @@ import {Office} from "./office.entity";
 import {createOfficeDTO} from "./dto/create-office.dto";
 import {updateOfficeDTO} from "./dto/update-office.dto";
 import {officeService} from "./office.service";
+import {Team} from "../team/team.entity";
 
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
 
@@ -21,17 +22,23 @@ export class officeController {
     }
 
     @Get(':id')
-    findByOfficeID(@Param('officeID', ParseIntPipe) officeID: number): Promise<Office> {
-        return this.officeService.findByOfficeID(officeID);
+    findByOfficeID(@Param('id', ParseIntPipe) id: number): Promise<Office> {
+        return this.officeService.findByOfficeID(id);
+    }
+
+    @Get(':id/team')
+    findOfficeTeam(@Param('id', ParseIntPipe) id: number): Promise<Team> {
+        return this.officeService.findOfficeTeam(id);
     }
 
     @Put(':id')
-    updateOffice(@Param('officeID', ParseIntPipe) officeID: number, updateOfficeDTO:updateOfficeDTO): Promise<Office> {
-        return this.officeService.updateOffice(officeID, updateOfficeDTO);
+    updateOffice(@Param('id', ParseIntPipe) id: number, @Body() updateOfficeDTO:updateOfficeDTO): Promise<Office> {
+        return this.officeService.updateOffice(id, updateOfficeDTO);
     }
 
     @Delete(':id')
-    remove(@Param('officeID', ParseIntPipe) officeID: number): Promise<void> {
-        return this.officeService.deleteOffice(officeID);
+    remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+        return this.officeService.deleteOffice(id);
     }
 }
+

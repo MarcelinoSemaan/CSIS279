@@ -21,30 +21,31 @@ export class vehicleController {
     }
 
     @Get(':id')
-    findByVehicleRegNum(@Param('vehicleRegNum', ParseIntPipe) vehicleRegNum: number): Promise<Vehicle> {
+    findByVehicleRegNum(@Param('id', ParseIntPipe) vehicleRegNum: number): Promise<Vehicle> {
         return this.vehicleService.findByVehicleRegNum(vehicleRegNum);
     }
 
-    @Get(':id')
-    findVehDriverByDriverID(@Param('vehicleDriverID', ParseIntPipe) vehicleDriverID: number): Promise<Driver> {
-        return this.vehicleService.findVehDriverByDriverID(vehicleDriverID);
+    @Get(':id/driver')
+    findVehicleDriver(@Param('id', ParseIntPipe) vehicleRegNum: number): Promise<Driver> {
+        return this.vehicleService.findVehDriverByDriverID(vehicleRegNum);
     }
 
-    @Get(':id')
-    findByVehicleType(@Param('vehicleType', ParseIntPipe) vehicleType: number): Promise<Vehicle[]> {
+    @Get('type/:type')
+    findByVehicleType(@Param('type', ParseIntPipe) vehicleType: number): Promise<Vehicle[]> {
         return this.vehicleService.findByVehicleType(vehicleType);
     }
 
     @Put(':id')
     updateVehicle(
-        @Param('vehicleRegNum', ParseIntPipe)vehicleRegNum: number,
+        @Param('id', ParseIntPipe) vehicleRegNum: number,
         @Body() updateVehicleDTO: updateVehicleDTO
     ): Promise<Vehicle> {
         return this.vehicleService.updateVehicle(vehicleRegNum, updateVehicleDTO);
     }
 
     @Delete(':id')
-    remove(@Param('vehicleRegNum', ParseIntPipe) vehicleRegNum: number): Promise<void> {
+    remove(@Param('id', ParseIntPipe) vehicleRegNum: number): Promise<void> {
         return this.vehicleService.removeVehicle(vehicleRegNum);
     }
 }
+

@@ -26,37 +26,38 @@ export class memberController {
     }
 
     @Get(':id')
-    findByID(@Param('memberID', ParseIntPipe) memberID: number): Promise<Member> {
+    findByID(@Param('id', ParseIntPipe) memberID: number): Promise<Member> {
         return this.memberService.findByID(memberID);
     }
 
-    @Get(':id')
-    findMemberTeamByTeamID(@Param('memberTeamID', ParseIntPipe) memberTeamID: number): Promise<Team> {
-        return this.memberService.findMemberTeamByTeamID(memberTeamID);
+    @Get(':id/team')
+    findMemberTeam(@Param('id', ParseIntPipe) memberID: number): Promise<Team> {
+        return this.memberService.findMemberTeamByTeamID(memberID);
     }
 
-    @Get(':id')
-    findMemberOfficeByTeamOfficeID(@Param('memberTeamOfficeID', ParseIntPipe) memberTeamOfficeID: number): Promise<Office> {
-        return this.memberService.findMemberOfficeByTeamOfficeID(memberTeamOfficeID);
+    @Get(':id/office')
+    findMemberOffice(@Param('id', ParseIntPipe) memberID: number): Promise<Office> {
+        return this.memberService.findMemberOfficeByTeamOfficeID(memberID);
     }
 
-    @Get(':id')
-    findMemberVehicleByVehicleRegNum(@Param('memberVehicleRegNum', ParseIntPipe) memberVehicleRegNum: number): Promise<Vehicle> {
-        return this.memberService.findMemberVehicleByVehicleRegNum(memberVehicleRegNum);
+    @Get(':id/vehicle')
+    findMemberVehicle(@Param('id', ParseIntPipe) memberID: number): Promise<Vehicle> {
+        return this.memberService.findMemberVehicleByVehicleRegNum(memberID);
     }
 
-    @Get(':id')
-    findMemberDriverByDriverID(@Param('memberDriverID', ParseIntPipe) memberDriverID: number): Promise<Driver>{
-        return this.memberService.findMemberDriverByDriverID(memberDriverID);
+    @Get(':id/driver')
+    findMemberDriver(@Param('id', ParseIntPipe) memberID: number): Promise<Driver>{
+        return this.memberService.findMemberDriverByDriverID(memberID);
     }
 
     @Put(':id')
-    updateMember(@Param('memberID', ParseIntPipe) memberID: number, updateMemberDTO: updateMemberDTO): Promise<Member> {
+    updateMember(@Param('id', ParseIntPipe) memberID: number, @Body() updateMemberDTO: updateMemberDTO): Promise<Member> {
         return this.memberService.updateMember(memberID, updateMemberDTO);
     }
 
     @Delete(':id')
-    remove(@Param('memberID', ParseIntPipe) memberID: number): Promise<void> {
+    remove(@Param('id', ParseIntPipe) memberID: number): Promise<void> {
         return this.memberService.deleteMember(memberID);
     }
 }
+
