@@ -5,6 +5,9 @@ import './App.css';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import EventCalendar from './components/events/EventCalendar';
+import TeamEventList from './components/teams/TeamEventList';
+import MemberEventList from './components/members/MemberEventList';
+import TeamLeaderEventList from './components/teams/TeamLeaderEventList';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 
@@ -42,6 +45,30 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <EventCalendar />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/events/teams"
+                        element={
+                            <ProtectedRoute>
+                                <TeamEventList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/events/members"
+                        element={
+                            <ProtectedRoute>
+                                <MemberEventList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/events/team-leaders"
+                        element={
+                            <ProtectedRoute>
+                                <TeamLeaderEventList />
                             </ProtectedRoute>
                         }
                     />

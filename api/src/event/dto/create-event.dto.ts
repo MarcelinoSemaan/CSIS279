@@ -18,6 +18,10 @@ export class createEventDTO {
 
     @IsString()
     @IsNotEmpty()
+    eventType: string;
+
+    @IsString()
+    @IsNotEmpty()
     eventName: string;
 
     @IsString()

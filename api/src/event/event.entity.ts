@@ -25,6 +25,9 @@ export class Event {
     eventName: string;
 
     @Column()
+    eventType: string;
+
+    @Column()
     eventStartDate: Date;
 
     @Column()
