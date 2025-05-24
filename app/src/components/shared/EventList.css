@@ -1,0 +1,74 @@
+.event-list-container {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Problem severity styles */
+.event-list-container table tr.has-problems-low td {
+    background-color: #e6f3ff;
+    color: #0056b3;
+    position: relative;
+    border-left: 4px solid #0056b3;
+}
+
+.event-list-container table tr.has-problems-medium td {
+    background-color: #fff3e0;
+    color: #e65100;
+    position: relative;
+    border-left: 4px solid #e65100;
+}
+
+.event-list-container table tr.has-problems-high td {
+    background-color: #ffebee;
+    color: #c62828;
+    position: relative;
+    border-left: 4px solid #c62828;
+}
+
+.event-list-container table tr.has-problems-critical td {
+    background-color: #b71c1c;
+    color: #ffffff;
+    font-weight: bold;
+    position: relative;
+    border-left: 4px solid #ff1744;
+    animation: pulse 2s infinite;
+}
+
+.event-list-container table tr:hover td {
+    filter: brightness(0.95);
+}
+
+/* Problem icon styles */
+.event-list-container .text-warning,
+.event-list-container .text-danger {
+    font-size: 1.2em;
+    cursor: help;
+    transition: transform 0.2s ease;
+}
+
+.event-list-container .text-warning:hover,
+.event-list-container .text-danger:hover {
+    transform: scale(1.2);
+}
+
+/* Status icon colors */
+.event-list-container .text-warning {
+    color: #e65100;
+}
+
+.event-list-container .text-danger {
+    color: #ff1744;
+}
+
+/* Pulse animation for critical problems */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(183, 28, 28, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(183, 28, 28, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(183, 28, 28, 0);
+    }
+}

@@ -1,0 +1,58 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Changed from fixed height to min-height */
+  padding: 2rem 1rem; /* Added horizontal and vertical padding */
+  background-color: #f8f9fa;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px; /* Default for mobile */
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+  overflow-y: auto; /* Add scrolling if content is too tall */
+}
+
+/* Make form wider on medium screens */
+@media (min-width: 768px) {
+  .login-card {
+    max-width: 650px;
+    padding: 2.5rem;
+  }
+}
+
+/* Make form even wider on large screens */
+@media (min-width: 992px) {
+  .login-card {
+    max-width: 900px;
+  }
+
+  /* Optional: Use a two-column layout for signup form on large screens */
+  .signup-form .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .signup-form .form-group {
+    flex: 0 0 48%;
+    margin-right: 2%;
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.login-header p {
+  color: #6c757d;
+}

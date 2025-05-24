@@ -10,6 +10,7 @@ import MemberEventList from './components/members/MemberEventList';
 import TeamLeaderEventList from './components/teams/TeamLeaderEventList';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
+import TeamsList from './components/teams/TeamsList';
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -69,6 +70,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <TeamLeaderEventList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/teams"
+                        element={
+                            <ProtectedRoute>
+                                <TeamsList />
                             </ProtectedRoute>
                         }
                     />

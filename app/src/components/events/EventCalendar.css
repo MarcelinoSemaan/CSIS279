@@ -1,0 +1,417 @@
+/* General container for the event calendar page */
+.event-calendar-container {
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px; /* Reduced from 90px to bring it closer to navbar */
+}
+
+/* Wrapper for the FullCalendar component */
+.calendar-wrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Event type legend styling */
+.event-type-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Spacing between legend items */
+  margin-bottom: 15px;
+  padding-left: 0; /* Remove default list padding if it were a ul/ol */
+}
+
+.event-type-legend div { /* Assuming legend items are divs */
+  display: flex;
+  align-items: center;
+}
+
+.color-box {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+/* FullCalendar specific overrides and enhancements */
+
+/* General event styling */
+.fc-event {
+  cursor: pointer;
+  padding: 4px 6px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid transparent; /* Base border */
+}
+
+/* Event hover effect */
+.fc-event:hover {
+  opacity: 0.85;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure event text is visible and well-contrasted */
+.fc-event .fc-event-title {
+  color: #fff; /* White text for better contrast on colored backgrounds */
+  padding: 2px 4px;
+}
+
+/* Ensure event titles are visible */
+.fc-event-title {
+  font-weight: bold;
+  white-space: normal; /* Allow text to wrap */
+  overflow: visible;
+  color: #fff;
+  padding: 2px 4px;
+  font-size: 0.9em;
+}
+
+.fc-daygrid-event {
+  background-color: #3788d8;
+  border: none !important;
+  padding: 4px !important;
+  margin: 2px 0 !important;
+  cursor: pointer;
+  height: auto !important;
+  min-height: 30px;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.fc-daygrid-event .fc-event-main {
+  padding: 4px;
+  height: 100%;
+}
+
+.fc-daygrid-event .fc-event-title {
+  display: block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  color: #fff !important;
+  font-weight: bold;
+  font-size: 0.9em;
+  line-height: 1.3;
+  padding: 2px 4px !important;
+}
+
+/* Problem event styling */
+.has-problems.fc-event,
+.has-problems.fc-daygrid-event,
+.has-problems.fc-h-event {
+  background-color: #dc3545 !important;
+  border-color: #b02a37 !important;
+}
+
+.has-problems .fc-event-main {
+  color: white !important;
+}
+
+.has-problems:hover {
+  background-color: #bb2d3b !important;
+}
+
+.fc-h-event {
+  border: none;
+  display: block;
+  height: auto !important;
+  min-height: 30px;
+  background-color: #3788d8;
+}
+
+.fc .fc-daygrid-day-frame {
+  min-height: 100px;
+}
+
+.fc .fc-daygrid-body-balanced .fc-daygrid-day-events {
+  position: relative !important;
+}
+
+/* Highlight the current day */
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: #e9f5ff; /* A light blue to highlight today */
+  font-weight: bold;
+}
+
+/* Styling for the selection placeholder when dragging to select multiple days */
+.fc .fc-highlight {
+  background: #b1dcfb; /* Light blue for selection */
+  opacity: 0.4;
+}
+
+/* Day cell styling */
+.fc-daygrid-day-frame {
+  min-height: 100px; /* Ensure cells have a minimum height for better event display */
+  position: relative; /* For potential absolute positioning of elements within */
+}
+
+.fc-daygrid-day-number {
+  padding: 5px;
+  font-size: 0.9em;
+}
+
+/* Toolbar button styling */
+.fc .fc-button {
+  text-transform: capitalize; /* Capitalize button text e.g., "month", "week" */
+}
+
+.fc .fc-button-primary {
+  background-color: #007bff; /* Bootstrap primary blue */
+  border-color: #007bff;
+  color: #fff;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Hide the all-day cell and make all-day events fill the day */
+.fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion {
+  display: none;
+}
+
+.fc-timegrid-event.fc-event-allday {
+  height: 100% !important;
+}
+
+.fc .fc-daygrid-event {
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.fc-daygrid-event-harness {
+  height: 100%;
+}
+
+.fc-day-grid-event.fc-h-event {
+  min-height: 100%;
+}
+
+/* Event with problems styling */
+.fc-event.has-problems {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+/* Problem event styling - with higher specificity */
+.fc-view .fc-daygrid-event.has-problems {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.fc-view .fc-daygrid-event.has-problems .fc-event-main {
+  color: white !important;
+}
+
+.fc-view .fc-daygrid-event.has-problems .fc-event-title {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.fc-view .fc-timegrid-event.has-problems {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+/* Problem severity colors */
+.has-problems-low {
+  background-color: #fff3cd !important;
+  border-color: #ffe69c !important;
+}
+
+.has-problems-low .fc-event-title,
+.has-problems-low .fc-event-main,
+.has-problems-low .event-title {
+  color: #664d03 !important;
+}
+
+.has-problems-medium {
+  background-color: #ffa726 !important;
+  border-color: #fb8c00 !important;
+}
+
+.has-problems-medium .fc-event-title,
+.has-problems-medium .fc-event-main,
+.has-problems-medium .event-title {
+  color: #ffffff !important;
+}
+
+.has-problems-high {
+  background-color: #ef5350 !important;
+  border-color: #e53935 !important;
+}
+
+.has-problems-high .fc-event-title,
+.has-problems-high .fc-event-main,
+.has-problems-high .event-title {
+  color: #ffffff !important;
+}
+
+.has-problems-critical {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+}
+
+/* Add hover effects */
+.has-problems-low:hover,
+.has-problems-medium:hover,
+.has-problems-high:hover,
+.has-problems-critical:hover {
+  filter: brightness(0.95);
+}
+
+/* Event details sidebar */
+.event-details-sidebar {
+  position: fixed;
+  right: 0;
+  top: 90px;
+  bottom: 0;
+  width: 400px;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.event-details-sidebar.open {
+  transform: translateX(0);
+}
+
+.event-details-content {
+  margin-bottom: 20px;
+}
+
+.event-details-actions {
+  border-top: 1px solid #dee2e6;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.close-sidebar-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.close-sidebar-btn:hover {
+  color: #343a40;
+}
+
+/* Adjust main content when sidebar is open */
+.calendar-wrapper.sidebar-open {
+  margin-right: 400px;
+  transition: margin-right 0.3s ease;
+}
+
+/* Responsive adjustments for the calendar */
+
+/* Medium screens and below */
+@media screen and (max-width: 768px) {
+  .event-calendar-container {
+    padding: 15px;
+  }
+
+  .calendar-wrapper {
+    padding: 15px;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em; /* Slightly smaller title on medium screens */
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-direction: column; /* Stack toolbar items vertically */
+    align-items: flex-start; /* Align to the start */
+    gap: 10px; /* Space between stacked toolbar sections */
+  }
+
+  .fc-header-toolbar .fc-toolbar-chunk {
+    margin-bottom: 5px; /* Add some space between chunks when stacked */
+  }
+}
+
+/* Small screens and below */
+@media (max-width: 576px) {
+  .fc .fc-toolbar-title {
+    font-size: 1.1em; /* Even smaller title on small screens */
+  }
+
+  .event-type-legend {
+    flex-direction: column; /* Stack legend items vertically */
+    align-items: flex-start; /* Align to the start */
+    gap: 8px;
+  }
+
+  .fc-daygrid-day-frame {
+    min-height: 80px; /* Reduce min-height for smaller screens */
+  }
+
+  .fc-event {
+    font-size: 0.8em; /* Smaller font for events */
+  }
+}
+
+/* New styles for event content */
+.event-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.event-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-problem-indicator {
+  margin-left: 4px;
+}
+
+/* Problem event styling - override FullCalendar defaults */
+.fc-event.has-problems {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: white !important;
+}
+
+.fc-event.has-problems:hover {
+  background-color: #bb2d3b !important;
+  border-color: #bb2d3b !important;
+}
+
+.fc-event.has-problems .fc-event-main {
+  color: white !important;
+}
+
+/* Ensure the event title is visible */
+.fc-event.has-problems .event-title {
+  color: white !important;
+  font-weight: bold !important;
+}
