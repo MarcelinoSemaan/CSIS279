@@ -1,112 +1,221 @@
+# Event Management System
 
-# Midterm Project
+A full-stack web application for managing teams, events, and problem reporting built with React, NestJS, and TypeORM.
 
 ## Project Setup Instructions
 
-1. **Clone the repository:**
+### Backend (API)
+1. Navigate to the API directory:
    ```bash
-   git clone <repository-url>
-   cd Midterm
+   cd api
    ```
-
-2. **Install dependencies:**
+2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. **Configure environment variables:**
-   - Create a `.env` file based on `.env.example` and set your database credentials and other configs.
-
-4. **Run database migrations (if any):**
+3. Configure environment variables:
+   - Create a `.env` file with the following:
+     ```
+     DB_HOST=localhost
+     DB_PORT=5432
+     DB_USERNAME=your_username
+     DB_PASSWORD=your_password
+     DB_NAME=event_management
+     JWT_SECRET=your_jwt_secret
+     ```
+4. Start the API server:
    ```bash
-   npm run migrate
+   npm run start:dev
    ```
 
-5. **Start the application:**
+### Frontend (React App)
+1. Navigate to the app directory:
+   ```bash
+   cd app
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
    ```bash
    npm start
    ```
 
 ## API Endpoints and Usage
 
-| Method | Endpoint           | Description                | Request Body / Params         |
-|--------|--------------------|----------------------------|------------------------------|
-| GET    | `/api/users`       | Get all users              | None                         |
-| GET    | `/api/users/:id`   | Get user by ID             | URL param: `id`              |
-| POST   | `/api/users`       | Create a new user          | JSON: `{ name, email, ... }` |
-| PUT    | `/api/users/:id`   | Update user by ID          | URL param: `id`, JSON body   |
-| DELETE | `/api/users/:id`   | Delete user by ID          | URL param: `id`              |
+### Authentication
+- POST `/auth/login` - User login
+  - Body: `{ username: string, password: string }`
+  - Returns: `{ access_token: string }`
+- POST `/auth/signup` - User registration
+  - Body: `{ username: string, password: string, email: string }`
 
-_Replace `/api/users` with your actual endpoints if different._
+### Events
+- GET `/event` - Get all events
+- GET `/event/:id` - Get event by ID
+- POST `/event` - Create new event
+  - Body: `{ eventName, eventStartDate, eventEndDate, eventDescription, eventTeamID }`
+- PUT `/event/:id` - Update event
+- PATCH `/event/:id/report` - Report a problem for an event
+  - Body: `{ problemDescription: string, priority: 'low'|'medium'|'high'|'critical' }`
+- DELETE `/event/:id` - Delete event
 
-## Database Schema Description
+### Teams
+- GET `/team` - Get all teams
+- GET `/team/:id` - Get team by ID
+- POST `/team` - Create new team
+- PUT `/team/:id` - Update team
+- DELETE `/team/:id` - Delete team
 
-**Table: users**
+### Members
+- GET `/member` - Get all members
+- GET `/member/:id` - Get member by ID
+- POST `/member` - Create new member
+- PUT `/member/:id` - Update member
+- DELETE `/member/:id` - Delete member
 
-| Column    | Type         | Description         |
-|-----------|--------------|---------------------|
-| id        | INTEGER (PK) | Unique user ID      |
-| name      | VARCHAR      | User's name         |
-| email     | VARCHAR      | User's email        |
-| password  | VARCHAR      | Hashed password     |
-| createdAt | TIMESTAMP    | Creation timestamp  |
-| updatedAt | TIMESTAMP    | Update timestamp    |
+## Database Schema
 
-_Adapt this table to your actual schema if different._
+### Event
+```typescript
+{
+  eventID: number (PK)
+  eventOfficeID: number (FK)
+  eventTeamID: number (FK)
+  eventTeamOfficeID: number
+  eventName: string
+  eventStartDate: Date
+  eventEndDate: Date
+  eventDescription: string
+  eventProblemType: number
+  eventProblemDescription: string
+  status: EventStatus
+}
+```
 
-## Third-Party Libraries or Tools Used
+### Team
+```typescript
+{
+  teamID: number (PK)
+  teamName: string
+  teamOfficeID: number (FK)
+  teamStatus: string
+}
+```
 
-- **Express**: Web framework for Node.js
-- **Sequelize / Mongoose**: ORM/ODM for database interaction
-- **dotenv**: Environment variable management
-- **bcrypt**: Password hashing
-- **Jest / Mocha**: Testing framework
-- **Other**: (List any additional libraries used)
+### Member
+```typescript
+{
+  memberID: number (PK)
+  memberName: string
+  memberEmail: string
+  memberRole: string
+  memberTeamID: number (FK)
+}
+```
 
-## How to Run and Test the Application
+## Third-Party Libraries
 
-- **Run the application:**  
-  `npm start`
-- **Run tests:**  
-  `npm test`
-- **API testing:**  
-  Use [Postman](https://www.postman.com/) or `curl` to interact with the endpoints.
+### Backend
+- NestJS - Node.js framework
+- TypeORM - ORM for database operations
+- Passport - Authentication
+- JWT - Token-based authentication
+- Class Validator - DTO validation
+- PostgreSQL - Database
+
+### Frontend
+- React - UI library
+- Redux Toolkit - State management
+- React Router - Routing
+- FullCalendar - Calendar component
+- Axios - HTTP client
+- Bootstrap - CSS framework
+- FontAwesome - Icons
 
 ## Technical Documentation
 
-### Methods
+### Event Service Methods
 
-#### `getAllUsers()`
-- **Description:** Fetches all users from the database.
-- **Parameters:** None
-- **Returns:** `Promise<Array<User>>` — Array of user objects.
+#### `createEvent(createEventDto: CreateEventDto)`
+- Description: Creates a new event
+- Parameters: CreateEventDto containing event details
+- Returns: Promise<Event>
 
-#### `getUserById(id)`
-- **Description:** Fetches a user by their unique ID.
-- **Parameters:**  
-  - `id` (`string` or `number`): The user's ID.
-- **Returns:** `Promise<User | null>` — User object or null if not found.
+#### `findAll()`
+- Description: Retrieves all events
+- Returns: Promise<Event[]>
 
-#### `createUser(userData)`
-- **Description:** Creates a new user.
-- **Parameters:**  
-  - `userData` (`object`): `{ name, email, password }`
-- **Returns:** `Promise<User>` — The created user object.
+#### `findOne(id: number)`
+- Description: Retrieves event by ID
+- Parameters: id (number)
+- Returns: Promise<Event>
 
-#### `updateUser(id, updateData)`
-- **Description:** Updates an existing user.
-- **Parameters:**  
-  - `id` (`string` or `number`): The user's ID.
-  - `updateData` (`object`): Fields to update.
-- **Returns:** `Promise<User | null>` — Updated user object or null if not found.
+#### `update(id: number, updateEventDto: UpdateEventDto)`
+- Description: Updates existing event
+- Parameters: 
+  - id: number
+  - updateEventDto: UpdateEventDto
+- Returns: Promise<Event>
 
-#### `deleteUser(id)`
-- **Description:** Deletes a user by ID.
-- **Parameters:**  
-  - `id` (`string` or `number`): The user's ID.
-- **Returns:** `Promise<boolean>` — `true` if deleted, `false` otherwise.
+#### `reportProblem(id: number, problemDetails: ReportProblemDto)`
+- Description: Reports a problem for an event
+- Parameters:
+  - id: Event ID
+  - problemDetails: { problemDescription: string, priority: string }
+- Returns: Promise<Event>
 
----
+### Team Service Methods
 
-_Replace method names and signatures with your actual implementations as needed._
+#### `createTeam(createTeamDto: CreateTeamDto)`
+- Description: Creates a new team
+- Parameters: CreateTeamDto containing team details
+- Returns: Promise<Team>
 
+#### `findAll()`
+- Description: Retrieves all teams
+- Returns: Promise<Team[]>
+
+### Frontend Components
+
+#### EventCalendar
+- Purpose: Main calendar view for events
+- Props: None
+- State:
+  - events: Event[]
+  - selectedEvent: Event
+  - showReportModal: boolean
+
+#### TeamsList
+- Purpose: Displays teams and their availability
+- Props: None
+- State:
+  - teams: Team[]
+  - loading: boolean
+
+## Testing
+
+### API Testing
+1. Run unit tests:
+   ```bash
+   cd api
+   npm run test
+   ```
+2. Run e2e tests:
+   ```bash
+   npm run test:e2e
+   ```
+
+### Frontend Testing
+1. Run React component tests:
+   ```bash
+   cd app
+   npm test
+   ```
+
+## Additional Notes
+- The system uses JWT for authentication
+- Calendar events support problem reporting with priority levels
+- Teams can be marked as available/unavailable
+- Real-time updates for team availability and problem reporting
