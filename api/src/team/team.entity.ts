@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Office} from "../office/office.entity";
 import {Member} from "../member/member.entity";
 
@@ -9,7 +9,7 @@ export enum TeamStatus {
 
 @Entity()
 export class Team {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     teamID: number;
 
     @OneToOne(() => Office, office => office.Team)

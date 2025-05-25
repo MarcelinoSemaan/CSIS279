@@ -5,14 +5,13 @@ import './App.css';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import EventCalendar from './components/events/EventCalendar';
-import TeamEventList from './components/teams/TeamEventList';
-import MemberEventList from './components/members/MemberEventList';
-import TeamLeaderEventList from './components/teams/TeamLeaderEventList';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import TeamsList from './components/teams/TeamsList';
 import DriverList from './components/drivers/DriverList';
 import VehicleList from './components/vehicles/VehicleList';
+import OfficeList from './components/offices/OfficeList';
+import MembersList from './components/members/MembersList';
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -53,22 +52,6 @@ function App() {
                         }
                     />
                     <Route
-                        path="/events/teams"
-                        element={
-                            <ProtectedRoute>
-                                <TeamEventList />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/events/members"
-                        element={
-                            <ProtectedRoute>
-                                <MemberEventList />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
                         path="/events/drivers"
                         element={
                             <ProtectedRoute>
@@ -85,10 +68,18 @@ function App() {
                         }
                     />
                     <Route
-                        path="/events/team-leaders"
+                        path="/offices"
                         element={
                             <ProtectedRoute>
-                                <TeamLeaderEventList />
+                                <OfficeList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/members"
+                        element={
+                            <ProtectedRoute>
+                                <MembersList />
                             </ProtectedRoute>
                         }
                     />

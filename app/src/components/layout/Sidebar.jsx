@@ -6,12 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSignOutAlt,
   faUsers,
-  faUserTie,
-  faCalendarAlt,
   faPeopleGroup,
+  faCalendarAlt,
   faExclamationTriangle,
   faTruck,
-  faCar
+  faCar,
+  faBuilding
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
@@ -27,11 +27,11 @@ const Sidebar = () => {
 
   const menuItems = [
     { name: 'Calendar', icon: faCalendarAlt, path: '/events/calendar' },
-    { name: 'Teams', icon: faPeopleGroup, path: '/events/teams' },
-    { name: 'Members', icon: faUsers, path: '/events/members' },
-    { name: 'Team Leaders', icon: faUserTie, path: '/events/team-leaders' },
+    { name: 'Members', icon: faUsers, path: '/members' },
+    { name: 'Teams', icon: faPeopleGroup, path: '/teams' },
     { name: 'Drivers', icon: faTruck, path: '/events/drivers' },
     { name: 'Vehicles', icon: faCar, path: '/vehicles' },
+    { name: 'Offices', icon: faBuilding, path: '/offices' },
     { name: 'Problems', icon: faExclamationTriangle, path: '/problems' },
   ];
 
