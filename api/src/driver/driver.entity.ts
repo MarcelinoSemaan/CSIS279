@@ -6,8 +6,8 @@ export class Driver {
     @PrimaryColumn()
     driverID: number;
 
-    @OneToOne(() => Vehicle, vehicle => vehicle.vehicleDriverID)
-    Vehicle: Vehicle;
+    @OneToOne(() => Vehicle, vehicle => vehicle.driver, { nullable: true })
+    vehicle: Vehicle;
 
     @Column()
     driverName: string;

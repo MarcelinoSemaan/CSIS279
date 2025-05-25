@@ -7,9 +7,12 @@ export class Vehicle {
     @PrimaryColumn()
     vehicleRegNum: number;
 
-    @OneToOne(() => Driver, driver => driver.Vehicle)
-    @JoinColumn({ name: 'vehicleDriverID'})
+    @Column({ nullable: true })
     vehicleDriverID: number;
+
+    @OneToOne(() => Driver)
+    @JoinColumn({ name: 'vehicleDriverID' })
+    driver: Driver;
 
     @OneToOne(() => Member, member => member.memberVehicleRegNum)
     Member: Member;

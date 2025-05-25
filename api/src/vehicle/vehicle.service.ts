@@ -1,6 +1,6 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {Injectable, NotFoundException, BadRequestException, InternalServerErrorException, ConflictException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import {Repository, Not} from "typeorm";
 
 import {createVehicleDTO} from "./dto/create-vehicle.dto";
 import {updateVehicleDTO} from "./dto/update-vehicle.dto"
@@ -49,12 +49,65 @@ export class vehicleService {
     }
 
     async updateVehicle(vehicleRegNum: number, updateVehicleDTO: updateVehicleDTO): Promise<Vehicle> {
-        const vehicle = await this.vehicleRepository.findOneBy({vehicleRegNum});
-        if (!vehicle) {
-            throw new NotFoundException("Vehicle not found");
+        const vehicleToUpdate = await this.vehicleRepository.findOneBy({ vehicleRegNum });
+        if (!vehicleToUpdate) {
+            throw new NotFoundException(`Vehicle with registration number ${vehicleRegNum} not found`);
         }
-        Object.assign(vehicle, updateVehicleDTO);
-        return this.vehicleRepository.save(vehicle);
+
+        // If vehicleDriverID is being updated, perform additional checks.
+        if (updateVehicleDTO.vehicleDriverID !== undefined &&
+            updateVehicleDTO.vehicleDriverID !== null &&
+            updateVehicleDTO.vehicleDriverID !== vehicleToUpdate.vehicleDriverID) { // Check only if driver ID is actually changing
+
+            const newDriverId = updateVehicleDTO.vehicleDriverID;
+
+            // Check if the new driver ID is valid (driver exists)
+            try {
+                const driver = await this.driverService.findByDriverID(newDriverId);
+                if (!driver) {
+                    throw new BadRequestException(`Driver with ID ${newDriverId} not found or is invalid. Cannot assign to vehicle.`);
+                }
+
+                // Check if the driver is already assigned to another vehicle
+                const existingVehicleWithDriver = await this.vehicleRepository.findOneBy({
+                    vehicleDriverID: newDriverId
+                });
+
+                // If the driver is already assigned to another vehicle, we need to clear that assignment first
+                if (existingVehicleWithDriver && existingVehicleWithDriver.vehicleRegNum !== vehicleRegNum) {
+                    console.log(`Driver ${newDriverId} is already assigned to vehicle ${existingVehicleWithDriver.vehicleRegNum}. Removing that assignment first.`);
+
+                    // Clear the driver assignment from the other vehicle
+                    existingVehicleWithDriver.vehicleDriverID = null;
+                    await this.vehicleRepository.save(existingVehicleWithDriver);
+                }
+            } catch (e) {
+                if (e instanceof BadRequestException) {
+                    throw e;
+                } else {
+                    console.error(`Error checking driver existence for ID ${newDriverId}:`, e);
+                    throw new InternalServerErrorException(`An error occurred while verifying driver ID ${newDriverId}.`);
+                }
+            }
+        }
+
+        // Apply updates to the vehicle object
+        Object.assign(vehicleToUpdate, updateVehicleDTO);
+
+        // Now, try to save the updated vehicle
+        try {
+            return await this.vehicleRepository.save(vehicleToUpdate);
+        } catch (dbError) {
+            console.error(`Error saving vehicle ${vehicleRegNum} during update:`, dbError);
+            // Handle database errors
+            if (dbError.code === 'ER_DUP_ENTRY' || dbError.code === '23505') {
+                throw new ConflictException(`Failed to update vehicle. A unique constraint was violated. You can try again to automatically reassign the driver.`);
+            }
+            if (dbError.code === 'ER_NO_REFERENCED_ROW_2' || dbError.code === '23503') {
+                throw new BadRequestException(`Failed to update vehicle. The specified driver ID (${vehicleToUpdate.vehicleDriverID}) may be invalid.`);
+            }
+            throw new InternalServerErrorException('An unexpected error occurred while saving the vehicle update.');
+        }
     }
 
     async removeVehicle(vehicleRegNum: number): Promise<void> {

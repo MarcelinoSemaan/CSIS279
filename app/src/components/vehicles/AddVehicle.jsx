@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import api from '../../utils/api';
 
@@ -7,10 +7,30 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
     vehicleRegNum: '',
     vehicleBrand: '',
     vehicleModel: '',
-    vehicleDriverID: ''
+    vehicleDriverID: '',
+    vehicleType: '',
+    vehicleCapacity: ''
   });
 
   const [errors, setErrors] = useState({});
+  const [availableDrivers, setAvailableDrivers] = useState([]);
+
+  useEffect(() => {
+    if (show) {
+      fetchAvailableDrivers();
+    }
+  }, [show]);
+
+  const fetchAvailableDrivers = async () => {
+    try {
+      const response = await api.get('/driver');
+      if (response.data) {
+        setAvailableDrivers(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching available drivers:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +51,15 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
     if (!formData.vehicleModel.trim()) {
       newErrors.vehicleModel = 'Model is required';
     }
+    if (!formData.vehicleDriverID) {
+      newErrors.vehicleDriverID = 'Driver is required';
+    }
+    if (!formData.vehicleType) {
+      newErrors.vehicleType = 'Vehicle type is required';
+    }
+    if (!formData.vehicleCapacity) {
+      newErrors.vehicleCapacity = 'Vehicle capacity is required';
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -43,7 +72,9 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
       const response = await api.post('/vehicle', {
         ...formData,
         vehicleRegNum: parseInt(formData.vehicleRegNum),
-        vehicleDriverID: formData.vehicleDriverID ? parseInt(formData.vehicleDriverID) : null
+        vehicleDriverID: parseInt(formData.vehicleDriverID),
+        vehicleType: parseInt(formData.vehicleType),
+        vehicleCapacity: parseInt(formData.vehicleCapacity)
       });
 
       if (response.data) {
@@ -53,7 +84,9 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
           vehicleRegNum: '',
           vehicleBrand: '',
           vehicleModel: '',
-          vehicleDriverID: ''
+          vehicleDriverID: '',
+          vehicleType: '',
+          vehicleCapacity: ''
         });
       }
     } catch (error) {
@@ -112,14 +145,66 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Driver ID (Optional)</Form.Label>
+            <Form.Label>Vehicle Type</Form.Label>
+            <Form.Select
+              name="vehicleType"
+              value={formData.vehicleType}
+              onChange={handleChange}
+              isInvalid={!!errors.vehicleType}
+              required
+            >
+              <option value="">Select a vehicle type</option>
+              <option value="1">Car</option>
+              <option value="2">Van</option>
+              <option value="3">Bus</option>
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.vehicleType}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Vehicle Capacity</Form.Label>
             <Form.Control
               type="number"
+              name="vehicleCapacity"
+              value={formData.vehicleCapacity}
+              onChange={handleChange}
+              isInvalid={!!errors.vehicleCapacity}
+              required
+              min="1"
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.vehicleCapacity}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Driver</Form.Label>
+            <Form.Select
               name="vehicleDriverID"
               value={formData.vehicleDriverID}
               onChange={handleChange}
-            />
+              isInvalid={!!errors.vehicleDriverID}
+              required
+            >
+              <option value="">Select a driver</option>
+              {availableDrivers.map(driver => (
+                <option key={driver.driverID} value={driver.driverID}>
+                  {driver.driverName} (ID: {driver.driverID})
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.vehicleDriverID}
+            </Form.Control.Feedback>
           </Form.Group>
+
+          {availableDrivers.length === 0 && (
+            <div className="alert alert-warning">
+              No available drivers found. All drivers currently have vehicles assigned.
+            </div>
+          )}
 
           {errors.submit && (
             <div className="alert alert-danger">{errors.submit}</div>
@@ -129,7 +214,11 @@ const AddVehicle = ({ show, handleClose, onVehicleAdded }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={availableDrivers.length === 0}
+          >
             Add Vehicle
           </Button>
         </Modal.Footer>

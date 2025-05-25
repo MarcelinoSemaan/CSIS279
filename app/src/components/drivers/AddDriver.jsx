@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import api from '../../utils/api';
 
 const AddDriver = ({ show, handleClose, onDriverAdded }) => {
@@ -11,6 +11,8 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +20,13 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
       ...prevState,
       [name]: value
     }));
+    // Clear specific field error when the user makes changes
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: null
+      });
+    }
   };
 
   const validateForm = () => {
@@ -42,16 +51,27 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setLoading(true);
+    setErrorMessage('');
+
     try {
-      const response = await api.post('/driver', {
-        ...formData,
+      const payload = {
         driverID: parseInt(formData.driverID),
-        driverNumber: parseInt(formData.driverNumber)
-      });
+        driverName: formData.driverName.trim(),
+        driverNumber: parseInt(formData.driverNumber),
+        driverRegion: formData.driverRegion.trim()
+      };
+
+      console.log('Sending driver data:', payload);
+
+      const response = await api.post('/driver', payload);
+
+      console.log('Response from server:', response);
 
       if (response.data) {
         onDriverAdded(response.data);
         handleClose();
+        // Reset form
         setFormData({
           driverID: '',
           driverName: '',
@@ -60,8 +80,17 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
         });
       }
     } catch (error) {
-      console.error('Error adding driver:', error);
-      setErrors({ submit: 'Error adding driver. Please try again.' });
+      console.error('Error adding driver:', error.response || error);
+
+      if (error.response?.data?.message) {
+        setErrorMessage(`Error: ${error.response.data.message}`);
+      } else if (error.response?.status === 409) {
+        setErrorMessage('A driver with this ID already exists.');
+      } else {
+        setErrorMessage('Failed to add driver. Please try again.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +101,10 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
+          {errorMessage && (
+            <Alert variant="danger">{errorMessage}</Alert>
+          )}
+
           <Form.Group className="mb-3">
             <Form.Label>Driver ID</Form.Label>
             <Form.Control
@@ -87,7 +120,7 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Driver Name</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
               name="driverName"
@@ -101,7 +134,7 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Driver Number</Form.Label>
+            <Form.Label>Number</Form.Label>
             <Form.Control
               type="number"
               name="driverNumber"
@@ -127,17 +160,13 @@ const AddDriver = ({ show, handleClose, onDriverAdded }) => {
               {errors.driverRegion}
             </Form.Control.Feedback>
           </Form.Group>
-
-          {errors.submit && (
-            <div className="alert alert-danger">{errors.submit}</div>
-          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose} disabled={loading}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit">
-            Add Driver
+          <Button variant="primary" type="submit" disabled={loading}>
+            {loading ? 'Adding...' : 'Add Driver'}
           </Button>
         </Modal.Footer>
       </Form>
